@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,23 +14,31 @@ namespace CIDRCalc.Pages
         [Inject]
         public IJSRuntime JavaScriptRuntime { get; set; }
 
-        public string StartIP { get; set; }
-
-        public string EndIP { get; set; }
+        public IPRange2CIDRModel IPRange2CIDRModel { get; set; }
 
         public IEnumerable<CIDR> CIDRs { get; set; }
 
         public Index()
         {
+            IPRange2CIDRModel = new ();
             CIDRs = Array.Empty<CIDR>();
         }
 
         private void GetCIDRs()
         {
-            var startAddress = IPAddress.Parse(StartIP);
-            var endAddress = IPAddress.Parse(EndIP);
+            var startAddress = IPAddress.Parse(IPRange2CIDRModel.StartIP);
+            var endAddress = IPAddress.Parse(IPRange2CIDRModel.EndIP);
 
             CIDRs = CIDR.Split(startAddress, endAddress);
         }
+    }
+
+    public class IPRange2CIDRModel
+    {
+        [Required]
+        public string StartIP { get; set; }
+
+        [Required]
+        public string EndIP { get; set; }
     }
 }

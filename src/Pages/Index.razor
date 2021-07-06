@@ -10,17 +10,23 @@
     <hr />
 
     <h2>IP Range to CIDR</h2>
-    <div class="mb-2">
-        <label for="input-startip" class="form-label">Start IP</label>
-        <input id="input-startip" type="text" class="form-control" placeholder="10.0.0.0" spellcheck="false" @bind="StartIP" />
-    </div>
-    <div class="mb-2">
-        <label for="input-endip" class="form-label">End IP</label>
-        <input id="input-endip" type="text" class="form-control" placeholder="10.0.0.255" spellcheck="false" @bind="EndIP" />
-    </div>
-    <div>
-        <button class="btn btn-primary" @onclick="GetCIDRs">Get CIDR(s)</button>
-    </div>
+    <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDRs">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-2">
+            <label for="input-startip" class="form-label">Start IP</label>
+            <InputText id="input-startip" class="form-control" placeholder="10.0.0.0" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
+        </div>
+        <div class="mb-2">
+            <label for="input-endip" class="form-label">End IP</label>
+            <InputText id="input-endip" class="form-control" placeholder="10.0.0.255" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Get CIDR(s)</button>
+        </div>
+    </EditForm>
+
 
     @if (CIDRs.Any())
     {
@@ -31,5 +37,5 @@
             }
         </div>
     }
-   
+
 </div>
