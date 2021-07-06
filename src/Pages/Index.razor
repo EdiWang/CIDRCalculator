@@ -27,7 +27,6 @@
         </div>
     </EditForm>
 
-
     @if (CIDRs.Any())
     {
         <div id="cidr-result" class="border mt-2 p-2 bg-light">
@@ -38,4 +37,25 @@
         </div>
     }
 
+    <h2 class="mt-5">CIDR to IP Range</h2>
+
+    <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-2">
+            <label for="input-cidr" class="form-label">CIDR</label>
+            <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Get IP Range</button>
+        </div>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(IPRange))
+    {
+        <div id="iprange-result" class="border mt-2 p-2 bg-light">
+            @IPRange
+        </div>
+    }
 </div>
