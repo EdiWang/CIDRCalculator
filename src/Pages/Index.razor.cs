@@ -36,9 +36,11 @@ namespace CIDRCalc.Pages
     public class IPRange2CIDRModel
     {
         [Required]
+        [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ErrorMessage = "Please input a valid IPv4 Address")]
         public string StartIP { get; set; }
 
         [Required]
+        [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ErrorMessage = "Please input a valid IPv4 Address")]
         public string EndIP { get; set; }
     }
 }
