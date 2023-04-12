@@ -1,61 +1,67 @@
 ﻿@page "/"
 
-<div class="row g-1 justify-content-md-center box mt-4">
-    <h1 class="text-center">
-        CIDR Calculator
-    </h1>
-    <div class="text-center">
-        <small class="text-muted">Blazor WASM / .NET @Environment.Version</small>
+<h1 class="text-center mt-4">
+    CIDR Calculator
+</h1>
+<div class="text-center">
+    <small class="text-muted">Blazor WASM / .NET @Environment.Version</small>
+</div>
+
+<div class="row justify-content-md-center mt-4">
+    <div class="col-md-4 box">
+        <h3>IP Range to CIDR</h3>
+        <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDRs">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-2">
+                <label for="input-startip" class="form-label">Start IP</label>
+                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
+            </div>
+            <div class="mb-2">
+                <label for="input-endip" class="form-label">End IP</label>
+                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Get CIDR(s)</button>
+            </div>
+        </EditForm>
+
+        @if (CIDRs.Any())
+        {
+            <div id="cidr-result" class="border mt-2 p-2 bg-light">
+                @foreach (var cidr in CIDRs)
+                {
+                    @cidr
+                    <br />
+                }
+            </div>
+        }
     </div>
-    <hr />
+</div>
 
-    <h2>IP Range to CIDR</h2>
-    <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDRs">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<div class="row justify-content-md-center mt-3">
+    <div class="col-md-4 box">
+        <h3>CIDR to IP Range</h3>
 
-        <div class="mb-2">
-            <label for="input-startip" class="form-label">Start IP</label>
-            <InputText id="input-startip" class="form-control" placeholder="10.0.0.0" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
-        </div>
-        <div class="mb-2">
-            <label for="input-endip" class="form-label">End IP</label>
-            <InputText id="input-endip" class="form-control" placeholder="10.0.0.255" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Get CIDR(s)</button>
-        </div>
-    </EditForm>
+        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    @if (CIDRs.Any())
-    {
-        <div id="cidr-result" class="border mt-2 p-2 bg-light">
-            @foreach (var cidr in CIDRs)
-            {
-                @cidr <br />
-            }
-        </div>
-    }
+            <div class="mb-2">
+                <label for="input-cidr" class="form-label">CIDR</label>
+                <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Get IP Range</button>
+            </div>
+        </EditForm>
 
-    <h2 class="mt-5">CIDR to IP Range</h2>
-
-    <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
-        <div class="mb-2">
-            <label for="input-cidr" class="form-label">CIDR</label>
-            <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Get IP Range</button>
-        </div>
-    </EditForm>
-
-    @if (!string.IsNullOrWhiteSpace(IPRange))
-    {
-        <div id="iprange-result" class="border mt-2 p-2 bg-light">
-            @IPRange
-        </div>
-    }
+        @if (!string.IsNullOrWhiteSpace(IPRange))
+        {
+            <div id="iprange-result" class="border mt-2 p-2 bg-light">
+                @IPRange
+            </div>
+        }
+    </div>
 </div>
