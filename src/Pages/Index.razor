@@ -10,7 +10,7 @@
 <div class="row justify-content-md-center mt-4">
     <div class="col-md-4 box">
         <h3>IP Range to CIDR</h3>
-        <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDRs">
+        <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDR">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
@@ -44,7 +44,7 @@
     <div class="col-md-4 box">
         <h3>CIDR to IP Range</h3>
 
-        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
+        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRangev4">
             <DataAnnotationsValidator />
             <ValidationSummary />
 

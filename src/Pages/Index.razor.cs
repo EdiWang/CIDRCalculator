@@ -25,7 +25,7 @@ public partial class Index
         CIDRs = Array.Empty<CIDR>();
     }
 
-    private void GetCIDRs()
+    private void GetCIDR()
     {
         var startAddress = IPAddress.Parse(IPRange2CIDRModel.StartIP);
         var endAddress = IPAddress.Parse(IPRange2CIDRModel.EndIP);
@@ -33,7 +33,7 @@ public partial class Index
         CIDRs = CIDR.Split(startAddress, endAddress);
     }
 
-    private void GetIPRange()
+    private void GetIPRangev4()
     {
         var inputCIDR = CIDR2IPRangeModel.CIDR.Split('/');
         if (inputCIDR.Length > 1)
@@ -51,11 +51,11 @@ public partial class Index
 public class IPRange2CIDRModel
 {
     [Required]
-    [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ErrorMessage = "Please input a valid IPv4 Address")]
+    [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$", ErrorMessage = "Please input a valid IPv4/IPv6 Address")]
     public string StartIP { get; set; }
 
     [Required]
-    [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ErrorMessage = "Please input a valid IPv4 Address")]
+    [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$", ErrorMessage = "Please input a valid IPv4/IPv6 Address")]
     public string EndIP { get; set; }
 }
 
