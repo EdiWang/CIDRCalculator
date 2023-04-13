@@ -16,11 +16,11 @@
 
             <div class="mb-2">
                 <label for="input-startip" class="form-label">Start IP</label>
-                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0/2001:0db8:abcd:0012:0000:0000:0000:0000" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
+                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0 or 2001:0db8:abcd:0012:0000:0000:0000:0000" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
             </div>
             <div class="mb-2">
                 <label for="input-endip" class="form-label">End IP</label>
-                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255/2001:0db8:abcd:0012:ffff:ffff:ffff:ffff" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
+                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255 or 2001:0db8:abcd:0012:ffff:ffff:ffff:ffff" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">Get CIDR</button>
@@ -44,23 +44,29 @@
     <div class="col-md-5 box">
         <h3>CIDR to IP Range</h3>
 
-        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRangev4">
+        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
             <div class="mb-2">
                 <label for="input-cidr" class="form-label">CIDR</label>
-                <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
+                <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24 or 2001:db8:abcd:0012::/64" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">Get IP Range</button>
             </div>
         </EditForm>
 
-        @if (!string.IsNullOrWhiteSpace(IPRange))
+        @if (!string.IsNullOrWhiteSpace(IPRangeStart) && !string.IsNullOrWhiteSpace(IPRangeEnd))
         {
+            <small class="d-block text-muted mt-3 mb-2">Start IP</small>
+            <div id="iprange-result" class="border mt-2 mb-3 p-2 bg-light">
+                @IPRangeStart
+            </div>
+
+            <small class="d-block text-muted mb-2">End IP</small>
             <div id="iprange-result" class="border mt-2 p-2 bg-light">
-                @IPRange
+                @IPRangeEnd
             </div>
         }
     </div>
