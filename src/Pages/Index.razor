@@ -8,7 +8,7 @@
 </div>
 
 <div class="row justify-content-md-center mt-4">
-    <div class="col-md-4 box">
+    <div class="col-md-5 box">
         <h3>IP Range to CIDR</h3>
         <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDR">
             <DataAnnotationsValidator />
@@ -16,14 +16,14 @@
 
             <div class="mb-2">
                 <label for="input-startip" class="form-label">Start IP</label>
-                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
+                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0/2001:0db8:abcd:0012:0000:0000:0000:0000" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
             </div>
             <div class="mb-2">
                 <label for="input-endip" class="form-label">End IP</label>
-                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
+                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255/2001:0db8:abcd:0012:ffff:ffff:ffff:ffff" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
             </div>
             <div>
-                <button type="submit" class="btn btn-primary">Get CIDR(s)</button>
+                <button type="submit" class="btn btn-primary">Get CIDR</button>
             </div>
         </EditForm>
 
@@ -41,7 +41,7 @@
 </div>
 
 <div class="row justify-content-md-center mt-3">
-    <div class="col-md-4 box">
+    <div class="col-md-5 box">
         <h3>CIDR to IP Range</h3>
 
         <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRangev4">
