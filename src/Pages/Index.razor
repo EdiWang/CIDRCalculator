@@ -6,14 +6,27 @@
         margin: 12px;
     }
 
+    .result-box {
+        font-family: 'Cascadia Code', 'Consolas', 'Courier New', Courier, monospace;
+        border: 1px solid #CECECE;
+        background-color: #F2F2F2;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
     .w100 {
         width: 100%;
     }
-</style>
 
-<FluentHeader>
-    CIDR Calculator
-</FluentHeader>
+    .mt-10px {
+        margin-top: 10px;
+    }
+
+    footer {
+        margin: 30px 12px !important;
+    }
+</style>
 
 <FluentGrid Spacing="3">
     <FluentGridItem md="4" sm="6" xs="12">
@@ -37,7 +50,7 @@
 
             @if (CIDRs.Any())
             {
-                <div id="cidr-result" class="border mt-2 p-2 bg-light">
+                <div id="cidr-result" class="result-box">
                     @foreach (var cidr in CIDRs)
                     {
                         @cidr
@@ -66,14 +79,16 @@
 
             @if (!string.IsNullOrWhiteSpace(IPRangeStart) && !string.IsNullOrWhiteSpace(IPRangeEnd))
             {
-                <small class="d-block text-muted mt-3 mb-2">Start IP</small>
-                <div id="iprange-result" class="border mt-2 mb-3 p-2 bg-light">
-                    @IPRangeStart
-                </div>
+                <div class="mt-10px">
+                    <label>Start IP:</label>
+                    <div id="iprange-result" class="result-box">
+                        @IPRangeStart
+                    </div>
 
-                <small class="d-block text-muted mb-2">End IP</small>
-                <div id="iprange-result" class="border mt-2 p-2 bg-light">
-                    @IPRangeEnd
+                    <label>End IP:</label>
+                    <div id="iprange-result" class="result-box">
+                        @IPRangeEnd
+                    </div>
                 </div>
             }
         </FluentCard>
