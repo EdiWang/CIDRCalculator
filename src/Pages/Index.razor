@@ -1,11 +1,22 @@
 ﻿@page "/"
 
+<style>
+    fluent-card {
+        padding: 20px;
+        margin: 12px;
+    }
+
+    .w100 {
+        width: 100%;
+    }
+</style>
+
 <FluentHeader>
     CIDR Calculator
 </FluentHeader>
 
-<FluentGrid Spacing="3" Justify="JustifyContent.Center">
-    <FluentGridItem sm="4">
+<FluentGrid Spacing="3">
+    <FluentGridItem md="4" sm="6" xs="12">
         <FluentCard>
             <h3>IP Range to CIDR</h3>
             <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDR">
@@ -13,14 +24,14 @@
                 <FluentValidationSummary />
 
                 <FluentStack Orientation="Orientation.Vertical">
-                    <FluentTextField Placeholder="10.0.0.0 or 2001:0db8:abcd:0012:0000:0000:0000:0000"
+                    <FluentTextField Placeholder="10.0.0.0 or 2001:0db8:abcd:0012:0000:0000:0000:0000" Class="w100"
                         @bind-Value="IPRange2CIDRModel.StartIP">Start IP:</FluentTextField>
 
-                    <FluentTextField Placeholder="10.0.0.255 or 2001:0db8:abcd:0012:ffff:ffff:ffff:ffff"
+                    <FluentTextField Placeholder="10.0.0.255 or 2001:0db8:abcd:0012:ffff:ffff:ffff:ffff" Class="w100"
                         @bind-Value="IPRange2CIDRModel.EndIP">End IP:</FluentTextField>
-                </FluentStack>
 
-                <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get CIDR</FluentButton>
+                    <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get CIDR</FluentButton>
+                </FluentStack>
             </EditForm>
 
             @if (CIDRs.Any())
@@ -35,7 +46,7 @@
             }
         </FluentCard>
     </FluentGridItem>
-    <FluentGridItem sm="4">
+    <FluentGridItem md="4" sm="6" xs="12">
         <FluentCard>
             <h3>CIDR to IP Range</h3>
 
@@ -44,12 +55,12 @@
                 <FluentValidationSummary />
 
                 <FluentStack Orientation="Orientation.Vertical">
-                    <FluentTextField Placeholder="10.0.0.0/24 or 2001:db8:abcd:0012::/64"
+                    <FluentTextField Placeholder="10.0.0.0/24 or 2001:db8:abcd:0012::/64" Class="w100"
                         @bind-Value="CIDR2IPRangeModel.CIDR">CIDR:</FluentTextField>
-                </FluentStack>
 
-                <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get IP Range
-                </FluentButton>
+                    <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get IP Range
+                    </FluentButton>
+                </FluentStack>
             </EditForm>
 
             @if (!string.IsNullOrWhiteSpace(IPRangeStart) && !string.IsNullOrWhiteSpace(IPRangeEnd))
