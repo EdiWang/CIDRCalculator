@@ -1,73 +1,73 @@
 ﻿@page "/"
 
-<h1 class="text-center mt-4">
+<FluentHeader>
     CIDR Calculator
-</h1>
-<div class="text-center">
-    <small class="text-muted">Blazor WASM / .NET @Environment.Version</small>
-</div>
+</FluentHeader>
 
-<div class="row justify-content-md-center mt-4">
-    <div class="col-md-5 box">
-        <h3>IP Range to CIDR</h3>
-        <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDR">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+<FluentGrid Spacing="3" Justify="JustifyContent.Center">
+    <FluentGridItem sm="4">
+        <FluentCard>
+            <h3>IP Range to CIDR</h3>
+            <EditForm Model="IPRange2CIDRModel" OnValidSubmit="GetCIDR">
+                <DataAnnotationsValidator />
+                <FluentValidationSummary />
 
-            <div class="mb-2">
-                <label for="input-startip" class="form-label">Start IP</label>
-                <InputText id="input-startip" class="form-control" placeholder="10.0.0.0 or 2001:0db8:abcd:0012:0000:0000:0000:0000" spellcheck="false" @bind-Value="IPRange2CIDRModel.StartIP" />
-            </div>
-            <div class="mb-2">
-                <label for="input-endip" class="form-label">End IP</label>
-                <InputText id="input-endip" class="form-control" placeholder="10.0.0.255 or 2001:0db8:abcd:0012:ffff:ffff:ffff:ffff" spellcheck="false" @bind-Value="IPRange2CIDRModel.EndIP" />
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Get CIDR</button>
-            </div>
-        </EditForm>
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentTextField Placeholder="10.0.0.0 or 2001:0db8:abcd:0012:0000:0000:0000:0000"
+                        @bind-Value="IPRange2CIDRModel.StartIP">Start IP:</FluentTextField>
 
-        @if (CIDRs.Any())
-        {
-            <div id="cidr-result" class="border mt-2 p-2 bg-light">
-                @foreach (var cidr in CIDRs)
-                {
-                    @cidr
-                    <br />
-                }
-            </div>
-        }
-    </div>
-</div>
+                    <FluentTextField Placeholder="10.0.0.255 or 2001:0db8:abcd:0012:ffff:ffff:ffff:ffff"
+                        @bind-Value="IPRange2CIDRModel.EndIP">End IP:</FluentTextField>
+                </FluentStack>
 
-<div class="row justify-content-md-center mt-3">
-    <div class="col-md-5 box">
-        <h3>CIDR to IP Range</h3>
+                <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get CIDR</FluentButton>
+            </EditForm>
 
-        <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+            @if (CIDRs.Any())
+            {
+                <div id="cidr-result" class="border mt-2 p-2 bg-light">
+                    @foreach (var cidr in CIDRs)
+                    {
+                        @cidr
+                        <br />
+                    }
+                </div>
+            }
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem sm="4">
+        <FluentCard>
+            <h3>CIDR to IP Range</h3>
 
-            <div class="mb-2">
-                <label for="input-cidr" class="form-label">CIDR</label>
-                <InputText id="input-cidr" class="form-control" placeholder="10.0.0.0/24 or 2001:db8:abcd:0012::/64" spellcheck="false" @bind-Value="CIDR2IPRangeModel.CIDR" />
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Get IP Range</button>
-            </div>
-        </EditForm>
+            <EditForm Model="CIDR2IPRangeModel" OnValidSubmit="GetIPRange">
+                <DataAnnotationsValidator />
+                <FluentValidationSummary />
 
-        @if (!string.IsNullOrWhiteSpace(IPRangeStart) && !string.IsNullOrWhiteSpace(IPRangeEnd))
-        {
-            <small class="d-block text-muted mt-3 mb-2">Start IP</small>
-            <div id="iprange-result" class="border mt-2 mb-3 p-2 bg-light">
-                @IPRangeStart
-            </div>
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentTextField Placeholder="10.0.0.0/24 or 2001:db8:abcd:0012::/64"
+                        @bind-Value="CIDR2IPRangeModel.CIDR">CIDR:</FluentTextField>
+                </FluentStack>
 
-            <small class="d-block text-muted mb-2">End IP</small>
-            <div id="iprange-result" class="border mt-2 p-2 bg-light">
-                @IPRangeEnd
-            </div>
-        }
-    </div>
-</div>
+                <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Get IP Range
+                </FluentButton>
+            </EditForm>
+
+            @if (!string.IsNullOrWhiteSpace(IPRangeStart) && !string.IsNullOrWhiteSpace(IPRangeEnd))
+            {
+                <small class="d-block text-muted mt-3 mb-2">Start IP</small>
+                <div id="iprange-result" class="border mt-2 mb-3 p-2 bg-light">
+                    @IPRangeStart
+                </div>
+
+                <small class="d-block text-muted mb-2">End IP</small>
+                <div id="iprange-result" class="border mt-2 p-2 bg-light">
+                    @IPRangeEnd
+                </div>
+            }
+        </FluentCard>
+    </FluentGridItem>
+</FluentGrid>
+
+<FluentFooter>
+    Blazor WASM / .NET @Environment.Version
+</FluentFooter>
