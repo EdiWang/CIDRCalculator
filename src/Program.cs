@@ -1,19 +1,15 @@
+using CIDRCalc;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Fast.Components.FluentUI;
 
-namespace CIDRCalc;
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
-public class Program
+builder.Services.AddFluentUIComponents(options =>
 {
-    public static async Task Main(string[] args)
-    {
-        var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        builder.RootComponents.Add<App>("#app");
-        builder.Services.AddFluentUIComponents(options =>
-        {
-            options.HostingModel = BlazorHostingModel.WebAssembly;
-        });
+    options.HostingModel = BlazorHostingModel.WebAssembly;
+});
 
-        await builder.Build().RunAsync();
-    }
-}
+await builder.Build().RunAsync();
