@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
-namespace CIDRCalc.Pages;
+namespace CIDRCalc.Components.Pages;
 
 public partial class Index
 {
