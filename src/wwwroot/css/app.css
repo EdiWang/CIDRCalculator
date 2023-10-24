@@ -2,10 +2,6 @@
     background: #F2F2F2;
 }
 
-.invalid {
-    outline: 1px solid red;
-}
-
 .validation-message {
     color: red;
 }
