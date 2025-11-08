@@ -63,11 +63,113 @@ function cidrCalculator() {
 
         // Binary array to IPv6
         binaryArrayToIpv6(groups) {
-            let hex = groups.map(g => g.toString(16)).join(':');
-            // Compress zeros
-            hex = hex.replace(/\b0+/g, '0');
-            hex = hex.replace(/(:0)+:/, '::');
-            return hex;
+            const normalize = g => g.toString(16).replace(/^0+/, '') || '0';
+            let bestStart = -1;
+            let bestLen = 0;
+            let currStart = -1;
+
+            for (let i = 0; i < 8; i++) {
+                if (groups[i] === 0) {
+                    if (currStart === -1) currStart = i;
+                } else if (currStart !== -1) {
+                    const len = i - currStart;
+                    if (len > bestLen) {
+                        bestStart = currStart;
+                        bestLen = len;
+                    }
+                    currStart = -1;
+                }
+            }
+
+            if (currStart !== -1) {
+                const len = 8 - currStart;
+                if (len > bestLen) {
+                    bestStart = currStart;
+                    bestLen = len;
+                }
+            }
+
+            if (bestLen > 1) {
+                const before = groups.slice(0, bestStart).map(normalize);
+                const after = groups.slice(bestStart + bestLen).map(normalize);
+                let result = '';
+                if (before.length) {
+                    result += before.join(':');
+                }
+                result += '::';
+                if (after.length) {
+                    result += after.join(':');
+                }
+                return result === '::' ? result : result.replace(/(^|:)0+(?=[0-9a-f])/g, '$1');
+            }
+
+            return groups.map(normalize).join(':');
+        },
+
+        ipv6GroupsToBigInt(groups) {
+            return groups.reduce((acc, group) => (acc << 16n) | BigInt(group), 0n);
+        },
+
+        bigIntToIpv6(value) {
+            let temp = value;
+            const groups = [];
+            for (let i = 0; i < 8; i++) {
+                groups.unshift(Number(temp & 0xFFFFn));
+                temp >>= 16n;
+            }
+            return this.binaryArrayToIpv6(groups);
+        },
+
+        getLargestBlockSize(current, remaining, maxBits) {
+            let blockSize = current & -current;
+            if (blockSize === 0n) {
+                blockSize = 1n << BigInt(maxBits);
+            }
+            while (blockSize > remaining) {
+                blockSize >>= 1n;
+            }
+            return blockSize;
+        },
+
+        blockSizeToPrefix(blockSize, maxBits) {
+            let prefix = maxBits;
+            let size = blockSize;
+            while (size > 1n) {
+                size >>= 1n;
+                prefix--;
+            }
+            return prefix;
+        },
+
+        ipv4RangeToCidrs(start, end) {
+            const result = [];
+            let current = BigInt(start);
+            const targetEnd = BigInt(end);
+
+            while (current <= targetEnd) {
+                const remaining = targetEnd - current + 1n;
+                const blockSize = this.getLargestBlockSize(current, remaining, 32);
+                const prefix = this.blockSizeToPrefix(blockSize, 32);
+                result.push(`${this.binaryToIpv4(Number(current))}/${prefix}`);
+                current += blockSize;
+            }
+
+            return result;
+        },
+
+        ipv6RangeToCidrs(start, end) {
+            const result = [];
+            let current = start;
+
+            while (current <= end) {
+                const remaining = end - current + 1n;
+                const blockSize = this.getLargestBlockSize(current, remaining, 128);
+                const prefix = this.blockSizeToPrefix(blockSize, 128);
+                result.push(`${this.bigIntToIpv6(current)}/${prefix}`);
+                current += blockSize;
+            }
+
+            return result;
         },
 
         // Calculate CIDR prefix from netmask
@@ -173,38 +275,28 @@ function cidrCalculator() {
                     return;
                 }
 
-                const prefix = this.calculatePrefix(start, end, false);
-                if (prefix === -1) {
-                    this.rangeToCidr.error = true;
-                    this.rangeToCidr.result = 'The IP range cannot be represented as a single CIDR block.';
-                    return;
-                }
-
-                this.rangeToCidr.result = `<strong>${startIp}/${prefix}</strong>`;
+                const cidrs = this.ipv4RangeToCidrs(start, end);
+                this.rangeToCidr.result = `<ul class="mb-0">${cidrs.map(cidr => `<li><strong>${cidr}</strong></li>`).join('')}</ul>`;
             } else {
-                const start = this.ipv6ToBinaryArray(startIp);
-                const end = this.ipv6ToBinaryArray(endIp);
+                const startGroups = this.ipv6ToBinaryArray(startIp);
+                const endGroups = this.ipv6ToBinaryArray(endIp);
 
-                if (!start || !end) {
+                if (!startGroups || !endGroups) {
                     this.rangeToCidr.error = true;
                     this.rangeToCidr.result = 'Invalid IPv6 address format.';
                     return;
                 }
 
-                if (this.compareIpv6Arrays(start, end) > 0) {
+                if (this.compareIpv6Arrays(startGroups, endGroups) > 0) {
                     this.rangeToCidr.error = true;
                     this.rangeToCidr.result = 'Start IP must be less than or equal to End IP.';
                     return;
                 }
 
-                const prefix = this.calculatePrefix(start, end, true);
-                if (prefix === -1) {
-                    this.rangeToCidr.error = true;
-                    this.rangeToCidr.result = 'The IP range cannot be represented as a single CIDR block.';
-                    return;
-                }
-
-                this.rangeToCidr.result = `<strong>${startIp}/${prefix}</strong>`;
+                const startBigInt = this.ipv6GroupsToBigInt(startGroups);
+                const endBigInt = this.ipv6GroupsToBigInt(endGroups);
+                const cidrs = this.ipv6RangeToCidrs(startBigInt, endBigInt);
+                this.rangeToCidr.result = `<ul class="mb-0">${cidrs.map(cidr => `<li><strong>${cidr}</strong></li>`).join('')}</ul>`;
             }
         },
 
