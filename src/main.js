@@ -95,16 +95,17 @@ function cidrCalculator() {
             } else {
                 const maxBits = 32;
                 for (let prefix = maxBits; prefix >= 0; prefix--) {
-                    const mask = (0xFFFFFFFF << (32 - prefix)) >>> 0;
-                    const networkStart = start & mask;
-                    const networkEnd = end & mask;
+                    const mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+                    const networkStart = (start & mask) >>> 0;
+                    const networkEnd = (end & mask) >>> 0;
 
                     // Check if start and end are in the same network
                     if (networkStart !== networkEnd) {
                         continue;
                     }
 
-                    const broadcast = networkStart | (~mask >>> 0);
+                    const hostMask = (~mask) >>> 0;
+                    const broadcast = (networkStart | hostMask) >>> 0;
 
                     if (start === networkStart && end === broadcast) {
                         return prefix;
