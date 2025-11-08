@@ -1,0 +1,167 @@
+:root {
+    color-scheme: light;
+    --o365-surface: #f3f2f1;
+    --o365-card: #ffffff;
+    --o365-border: #edebe9;
+    --o365-text-primary: #323130;
+    --o365-text-muted: #605e5c;
+    --o365-accent: #0078d4;
+    --o365-accent-dark: #005a9e;
+    --o365-success: #107c10;
+    --o365-alert-error: #a80000;
+    --o365-alert-info: #004578;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    background: var(--o365-surface);
+    color: var(--o365-text-primary);
+}
+
+h1 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.app-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.office-card {
+    background: var(--o365-card);
+    border: 1px solid var(--o365-border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+}
+
+.office-card .card-header {
+    margin-bottom: 20px;
+}
+
+.fieldset {
+    display: grid;
+    gap: 20px;
+}
+
+.fieldset.two-column {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--o365-text-muted);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--o365-border);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--o365-accent);
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+}
+
+.action-row {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    padding: 10px 20px;
+    cursor: pointer;
+    min-width: 160px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.primary-button {
+    background: var(--o365-accent);
+    color: #ffffff;
+}
+
+.primary-button:hover,
+.primary-button:focus {
+    background: var(--o365-accent-dark);
+}
+
+.secondary-button {
+    background: #ffffff;
+    border: 1px solid var(--o365-border);
+    color: var(--o365-text-primary);
+}
+
+.secondary-button:hover,
+.secondary-button:focus {
+    background: #faf9f8;
+}
+
+.alert {
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.alert strong {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.alert-success {
+    background: #dff6dd;
+    color: var(--o365-success);
+    border: 1px solid #c8f0c8;
+}
+
+.alert-info {
+    background: #deecf9;
+    color: var(--o365-alert-info);
+    border: 1px solid #c7e0f4;
+}
+
+.alert-danger {
+    background: #fde7e9;
+    color: var(--o365-alert-error);
+    border: 1px solid #f4abaa;
+}
+
+@media (max-width: 600px) {
+    .app-shell {
+        padding: 32px 16px 48px;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+}
